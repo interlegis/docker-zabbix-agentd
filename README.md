@@ -16,7 +16,7 @@ coreos:
       content: |
         [Unit]
         Description=Zabbix Monitor Agent
-        Documentation=https://www.zabbix.com/documentation/3.0/manual/concepts/agent
+        Documentation=https://www.zabbix.com/documentation/2.2/manual/concepts/agent
         [Service]
         Environment=ZBX_CONF_Server=proxy02,server01
         Environment=ZBX_CONF_ServerActive=proxy02
