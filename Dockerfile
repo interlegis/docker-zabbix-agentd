@@ -9,10 +9,9 @@ RUN echo "deb http://repo.zabbix.com/zabbix/3.0/debian jessie main" > /etc/apt/s
     apt-get install -y zabbix-agent && \
     /bin/mkdir -p /run/zabbix && \
     /bin/chown -R zabbix:zabbix /run/zabbix
-ADD etc#zabbix#zabbix_agentd.conf.d/* /etc/zabbix/zabbix_agentd.conf.d/
-ADD etc#zabbix#zabbix_agentd.conf.d/* /etc/zabbix/zabbix_agentd.d/
+ADD entrypoint.sh /
 
 EXPOSE 10050
 
-CMD [ "su", "-s", "/bin/sh", "-c", "/usr/sbin/zabbix_agentd --foreground", "zabbix" ]
+CMD [ "/entrypoint.sh" ]
 #CMD ["/bin/bash"]
