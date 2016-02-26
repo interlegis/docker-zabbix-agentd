@@ -14,5 +14,5 @@ ADD etc#zabbix#zabbix_agentd.conf.d/* /etc/zabbix/zabbix_agentd.d/
 
 EXPOSE 10050
 
-CMD ["/usr/sbin/zabbix_agentd", "--foreground"]
+CMD [ "su", "-s", "/bin/sh", "-c", "/usr/sbin/zabbix_agentd --foreground", "zabbix" ]
 #CMD ["/bin/bash"]
