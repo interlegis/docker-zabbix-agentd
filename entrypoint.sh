@@ -15,4 +15,7 @@ done > "${config_file}"
 # start agentd in foreground - has to be started as target user
 /usr/sbin/zabbix_agentd
 # agent process is forking to background
-while pgrep zabbix_agentd > /dev/null; do sleep 1; done
+sleep 1s
+agent_pid=`pgrep -o zabbix_agentd`
+## use tail to wait for pid
+kill -0 $agent_pid && tail -F --pid=$agent_pid /var/log/zabbix/zabbix_agentd.log
