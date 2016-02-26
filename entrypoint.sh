@@ -13,4 +13,6 @@ done > "${config_file}"
 # generate config -- end
 
 # start agentd in foreground - has to be started as target user
-su -s /bin/sh -c "/usr/sbin/zabbix_agentd --foreground" zabbix
+/usr/sbin/zabbix_agentd
+# agent process is forking to background
+while pgrep zabbix_agentd > /dev/null; do sleep 1; done
