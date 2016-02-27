@@ -18,13 +18,13 @@ coreos:
         Description=Zabbix Monitor Agent
         Documentation=https://www.zabbix.com/documentation/2.2/manual/concepts/agent
         [Service]
-        Environment=ZBX_CONF_Server=proxy02,server01
-        Environment=ZBX_CONF_ServerActive=proxy02
-        Environment=ZBX_CONF_UserParameter_1="mysql.ping,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive"
-        Environment=ZBX_CONF_UserParameter_2="mysql.ping2,HOME=/var/lib/zabbix mysqladmin ping | grep -c alive"
-        Restart=always
-        ExecStartPre=-/usr/bin/docker rm zabbix-agentd
-        ExecStart=/usr/bin/docker run --net=host --name zabbix-agentd godmodelabs/zabbix-agentd
+        ExecStartPre=/bin/sh -c 'cat >> /tmp/zabbix-agentd-env.txt <<<ZBX_CONF_Server=proxy02,server01'
+        ExecStartPre=/bin/sh -c 'cat >> /tmp/zabbix-agentd-env.txt <<<ZBX_CONF_ServerActive=proxy02'
+        ExecStartPre=/bin/sh -c 'cat >> /tmp/zabbix-agentd-env.txt <<<ZBX_CONF_EnableRemoteCommands=1'
+        ExecStartPre=/bin/sh -c 'cat >> /tmp/zabbix-agentd-env.txt <<<ZBX_CONF_StartAgents=10'
+        ExecStartPre=/bin/sh -c 'cat >> /tmp/zabbix-agentd-env.txt <<<ZBX_CONF_Timeout=30'
+        ExecStartPre=/bin/sh -c 'cat >> /tmp/zabbix-agentd-env.txt <<<ZBX_CONF_Hostname=$(/bin/hostname -f)'
+        ExecStart=/usr/bin/docker run --rm --env-file=/tmp/zabbix-agentd-env.txt --net=host --name zabbix-agentd godmodelabs/docker-zabbix-agentd:zabbix22
         ExecStop=-/usr/bin/docker stop zabbix-agentd
-        ExecStopPost=-/usr/bin/docker rm zabbix-agentd
+        ExecStopPost=-/bin/rm -f /tmp/zabbix-agentd-env.txt
 ```
