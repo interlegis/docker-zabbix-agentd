@@ -1,7 +1,7 @@
 FROM debian:jessie
 MAINTAINER it-operations@boerse-go.de
 
-RUN echo "deb http://repo.zabbix.com/zabbix/2.2/debian wheezy main" > /etc/apt/sources.list.d/zabbix.list && \
+RUN echo "deb http://repo.zabbix.com/zabbix/2.4/debian jessie main" > /etc/apt/sources.list.d/zabbix.list && \
     apt-get update -y && \
     apt-get install -y curl && \
     curl http://repo.zabbix.com/zabbix-official-repo.key | apt-key add - && \
