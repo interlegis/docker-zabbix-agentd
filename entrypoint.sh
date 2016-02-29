@@ -19,10 +19,13 @@ log_file=/var/log/zabbix/zabbix_agentd.log
 echo "LogFile=${log_file}" >> /etc/zabbix/zabbix_agentd.d/99-log-rotation.conf
 echo "LogFileSize=0" >> /etc/zabbix/zabbix_agentd.d/99-log-rotation.conf
 
-# start agentd in foreground - has to be started as target user
+# connect to fifo before agent starts
+timeout 2 cat ${log_file} &
+
+# start agentd
 /usr/sbin/zabbix_agentd
-# agent process is forking to background
-sleep 1s
-agent_pid=`pgrep -o zabbix_agentd`
+## wait for cat to exit
+wait
 ## use tail to wait for pid
-kill -0 ${agent_pid} && tail -F --pid=${agent_pid} ${log_file}
+agent_pid=`pgrep -o zabbix_agentd`
+[ -n "${agent_pid}" ] && kill -0 ${agent_pid} && tail -F --pid=${agent_pid} ${log_file}
