@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# enable bash debugging if DEBUG is set to "1"
+[ ${DEBUG:-0} = "1" ] && set -x
+
 # generate config
 config_file=${ZBX_CONFIGFILE:-/etc/zabbix/zabbix_agentd.d/80-env-generated.conf}
 
